@@ -1,0 +1,14 @@
+.claude/
+src/
+tests/
+docs/
+memory/
+scripts/
+.github/
+.eslintrc.json
+jest.config.js
+tsconfig.json
+COMPARISON.md
+COMPARISON-2026.md
+EXPANSION_PLAN.md
+*.tgz

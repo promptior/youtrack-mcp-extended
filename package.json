@@ -1,0 +1,65 @@
+{
+  "name": "youtrack-mcp-extended",
+  "version": "0.1.0",
+  "description": "MCP server for YouTrack with 70 tools covering the full REST API — issues, comments, work items, attachments, agile boards, sprints, articles, projects, users, tags, links, and saved queries. ~3x the tool surface of the official JetBrains MCP server.",
+  "main": "dist/server/index.js",
+  "bin": {
+    "youtrack-mcp-extended": "bin/youtrack-mcp-extended.js"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "start": "node bin/youtrack-mcp-extended.js",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests",
+    "lint": "eslint src/**/*.ts",
+    "type-check": "tsc --noEmit",
+    "dev": "tsc --watch",
+    "pack:tgz": "npm run build && npm pack",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "youtrack",
+    "jetbrains",
+    "claude",
+    "anthropic",
+    "ai-tools",
+    "issue-tracking"
+  ],
+  "license": "MIT",
+  "author": "Promtior",
+  "homepage": "https://github.com/promptior/youtrack-mcp-extended#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/promptior/youtrack-mcp-extended.git"
+  },
+  "bugs": {
+    "url": "https://github.com/promptior/youtrack-mcp-extended/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "esbuild": "^0.21.0",
+    "eslint": "^8.0.0",
+    "glob": "^10.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  }
+}

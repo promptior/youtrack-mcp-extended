@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+*.js.map
+.DS_Store
+src/**/*.js
+
+# Claude Code local config
+.claude/
+claude.md
+memory/
+*.tgz
+*.tar.gz
+scripts/install-*
+scripts/Install.command
