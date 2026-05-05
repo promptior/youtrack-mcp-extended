@@ -1,16 +1,16 @@
-# youtrack-mcp-extended
+# @promtior/youtrack-mcp-extended
 
 > Extended MCP server for YouTrack — covering the REST API endpoints that JetBrains' official MCP leaves out.
 
-[![npm version](https://img.shields.io/npm/v/youtrack-mcp-extended)](https://www.npmjs.com/package/youtrack-mcp-extended)
-[![license](https://img.shields.io/npm/l/youtrack-mcp-extended)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@promtior/youtrack-mcp-extended)](https://www.npmjs.com/package/@promtior/youtrack-mcp-extended)
+[![license](https://img.shields.io/npm/l/@promtior/youtrack-mcp-extended)](LICENSE)
 
 ---
 
 ## TL;DR
 
 ```bash
-npx youtrack-mcp-extended
+npx @promtior/youtrack-mcp-extended
 ```
 
 Set two environment variables, point your MCP client at it, and you get **70 tools** covering the full YouTrack REST API — compared to the 19 tools in the official JetBrains MCP server.
@@ -55,7 +55,7 @@ Works with Claude Desktop, Claude Code, and any MCP-compatible client. Compatibl
 
 The [official JetBrains YouTrack MCP server](https://www.jetbrains.com/help/youtrack/cloud/mcp-server.html) covers the basics — searching issues, creating issues, updating fields. But large chunks of the YouTrack REST API are missing: you can't delete issues, manage article comments, handle reactions, work with agile boards programmatically, delete links, upload attachments, or create projects.
 
-`youtrack-mcp-extended` fills that gap. It's a standalone npm package that calls the YouTrack REST API directly — no app package installation in your YouTrack instance required, no ZIP deployment, no admin access to YouTrack itself beyond a permanent token.
+`@promtior/youtrack-mcp-extended` fills that gap. It's a standalone npm package that calls the YouTrack REST API directly — no app package installation in your YouTrack instance required, no ZIP deployment, no admin access to YouTrack itself beyond a permanent token.
 
 ---
 
@@ -64,15 +64,17 @@ The [official JetBrains YouTrack MCP server](https://www.jetbrains.com/help/yout
 ### npx (no install needed)
 
 ```bash
-npx youtrack-mcp-extended
+npx @promtior/youtrack-mcp-extended
 ```
 
 ### Global install
 
 ```bash
-npm install -g youtrack-mcp-extended
+npm install -g @promtior/youtrack-mcp-extended
 youtrack-mcp-extended
 ```
+
+> The installed binary is `youtrack-mcp-extended` (unscoped) — only the npm package name carries the `@promtior/` scope.
 
 ### Claude Desktop
 
@@ -83,7 +85,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "youtrack-mcp-extended": {
       "command": "npx",
-      "args": ["youtrack-mcp-extended"],
+      "args": ["@promtior/youtrack-mcp-extended"],
       "env": {
         "YOUTRACK_URL": "https://your-instance.youtrack.cloud",
         "YOUTRACK_TOKEN": "perm:your-permanent-token"
@@ -99,7 +101,7 @@ Add to your `claude_desktop_config.json`:
 claude mcp add youtrack-mcp-extended \
   -e YOUTRACK_URL=https://your-instance.youtrack.cloud \
   -e YOUTRACK_TOKEN=perm:your-permanent-token \
-  -- npx youtrack-mcp-extended
+  -- npx @promtior/youtrack-mcp-extended
 ```
 
 ---
@@ -318,7 +320,7 @@ apply_command(command="State Fixed Priority Normal", issueIds=["DEMO-7"])
 
 ## vs. Official JetBrains MCP
 
-| Capability | Official JetBrains MCP | youtrack-mcp-extended |
+| Capability | Official JetBrains MCP | @promtior/youtrack-mcp-extended |
 |---|---|---|
 | Search issues | ✅ | ✅ |
 | Create / update issues | ✅ | ✅ |

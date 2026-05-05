@@ -81,7 +81,7 @@ export async function main() {
   if (!YOUTRACK_URL || !YOUTRACK_TOKEN) {
     process.stderr.write(
       'Error: YOUTRACK_URL and YOUTRACK_TOKEN environment variables are required\n' +
-      'Usage: YOUTRACK_URL=https://mycompany.youtrack.cloud YOUTRACK_TOKEN=perm:xxx npx youtrack-mcp-extended\n'
+      'Usage: YOUTRACK_URL=https://mycompany.youtrack.cloud YOUTRACK_TOKEN=perm:xxx npx @promtior/youtrack-mcp-extended\n'
     );
     process.exit(1);
   }
