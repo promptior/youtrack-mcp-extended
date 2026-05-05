@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in contributing to **youtrack-mcp-extended**!
+Thank you for your interest in contributing to **@promtior/youtrack-mcp-extended**!
 
 ## Getting Started
 

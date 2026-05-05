@@ -1,6 +1,9 @@
 {
-  "name": "youtrack-mcp-extended",
+  "name": "@promtior/youtrack-mcp-extended",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "MCP server for YouTrack with 70 tools covering the full REST API — issues, comments, work items, attachments, agile boards, sprints, articles, projects, users, tags, links, and saved queries. ~3x the tool surface of the official JetBrains MCP server.",
   "main": "dist/server/index.js",
   "bin": {
