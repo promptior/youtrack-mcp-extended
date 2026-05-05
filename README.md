@@ -2,8 +2,10 @@
 
 > Extended MCP server for YouTrack — covering the REST API endpoints that JetBrains' official MCP leaves out.
 
-[![npm version](https://img.shields.io/npm/v/@promtior/youtrack-mcp-extended)](https://www.npmjs.com/package/@promtior/youtrack-mcp-extended)
-[![license](https://img.shields.io/npm/l/@promtior/youtrack-mcp-extended)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/%40promtior%2Fyoutrack-mcp-extended.svg?label=npm&color=cb3837&logo=npm)](https://www.npmjs.com/package/@promtior/youtrack-mcp-extended)
+[![npm downloads](https://img.shields.io/npm/dm/%40promtior%2Fyoutrack-mcp-extended.svg?label=downloads&color=blue)](https://www.npmjs.com/package/@promtior/youtrack-mcp-extended)
+[![license](https://img.shields.io/npm/l/%40promtior%2Fyoutrack-mcp-extended.svg?color=green)](LICENSE)
+[![node](https://img.shields.io/node/v/%40promtior%2Fyoutrack-mcp-extended.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 ---
 
