@@ -1,6 +1,6 @@
 # @promtior/youtrack-mcp-extended
 
-> Extended MCP server for YouTrack — covering the REST API endpoints that JetBrains' official MCP leaves out.
+> Extended MCP server for YouTrack — a complement to JetBrains' official MCP with broader REST API coverage.
 
 [![npm version](https://img.shields.io/npm/v/%40promtior%2Fyoutrack-mcp-extended.svg?label=npm&color=cb3837&logo=npm)](https://www.npmjs.com/package/@promtior/youtrack-mcp-extended)
 [![npm downloads](https://img.shields.io/npm/dm/%40promtior%2Fyoutrack-mcp-extended.svg?label=downloads&color=blue)](https://www.npmjs.com/package/@promtior/youtrack-mcp-extended)
@@ -15,7 +15,7 @@
 npx @promtior/youtrack-mcp-extended
 ```
 
-Set two environment variables, point your MCP client at it, and you get **70 tools** covering the full YouTrack REST API — compared to the 19 tools in the official JetBrains MCP server.
+Set two environment variables, point your MCP client at it, and you get **70 tools** covering the full YouTrack REST API — a broader surface than the ~19 tools currently shipped by JetBrains' official MCP server (as of today).
 
 ```bash
 YOUTRACK_URL=https://your-instance.youtrack.cloud
@@ -46,7 +46,7 @@ Works with Claude Desktop, Claude Code, and any MCP-compatible client. Compatibl
   - [Projects](#projects)
   - [Users & Groups](#users--groups)
   - [Commands](#commands)
-- [vs. Official JetBrains MCP](#vs-official-jetbrains-mcp)
+- [Coverage compared to the Official JetBrains MCP](#coverage-compared-to-the-official-jetbrains-mcp)
 - [Known Limitations](#known-limitations)
 - [Authentication](#authentication)
 - [Contributing](#contributing)
@@ -55,9 +55,9 @@ Works with Claude Desktop, Claude Code, and any MCP-compatible client. Compatibl
 
 ## Why this exists
 
-The [official JetBrains YouTrack MCP server](https://www.jetbrains.com/help/youtrack/cloud/mcp-server.html) covers the basics — searching issues, creating issues, updating fields. But large chunks of the YouTrack REST API are missing: you can't delete issues, manage article comments, handle reactions, work with agile boards programmatically, delete links, upload attachments, or create projects.
+The [official JetBrains YouTrack MCP server](https://www.jetbrains.com/help/youtrack/cloud/mcp-server.html) is a solid starting point and covers the most common workflows — searching issues, creating issues, updating fields. As of today, it focuses on a curated subset of the REST API, so a number of scenarios aren't covered yet: deleting issues, managing article comments, handling reactions, working with agile boards programmatically, deleting links, uploading attachments, or creating projects. JetBrains is actively iterating on it, so this scope is likely to grow over time.
 
-`@promtior/youtrack-mcp-extended` fills that gap. It's a standalone npm package that calls the YouTrack REST API directly — no app package installation in your YouTrack instance required, no ZIP deployment, no admin access to YouTrack itself beyond a permanent token.
+We built `@promtior/youtrack-mcp-extended` to give teams more independence and power on top of YouTrack — without waiting for any specific roadmap. It's a standalone npm package that calls the YouTrack REST API directly, so you control which capabilities are exposed and how they behave. No app package installation in your YouTrack instance, no ZIP deployment, no admin access to YouTrack itself beyond a permanent token.
 
 ---
 
@@ -320,37 +320,39 @@ apply_command(command="State Fixed Priority Normal", issueIds=["DEMO-7"])
 
 ---
 
-## vs. Official JetBrains MCP
+## Coverage compared to the Official JetBrains MCP
 
-| Capability | Official JetBrains MCP | @promtior/youtrack-mcp-extended |
+> The table below reflects what the official JetBrains YouTrack MCP exposes **as of today**. JetBrains keeps expanding it, so think of this as a snapshot rather than a permanent comparison — capabilities marked as "not yet" may well be available in future releases.
+
+| Capability | Official JetBrains MCP (today) | @promtior/youtrack-mcp-extended |
 |---|---|---|
 | Search issues | ✅ | ✅ |
 | Create / update issues | ✅ | ✅ |
-| **Delete issues** | ❌ | ✅ |
-| **Change assignee (dedicated tool)** | ❌ | ✅ |
-| **Move issue to project** | ❌ | ✅ |
+| Delete issues | Not yet | ✅ |
+| Change assignee (dedicated tool) | Not yet | ✅ |
+| Move issue to project | Not yet | ✅ |
 | Get issue comments | ✅ | ✅ |
-| **Add / edit / delete comments** | ❌ | ✅ |
-| **Comment reactions** | ❌ | ✅ |
+| Add / edit / delete comments | Not yet | ✅ |
+| Comment reactions | Not yet | ✅ |
 | Log work | ✅ | ✅ |
-| **Get / update / delete work items** | ❌ | ✅ |
-| **All work items across instance** | ❌ | ✅ |
-| **Issue links (create / get / delete)** | ❌ | ✅ |
-| **Custom link types (create / update)** | ❌ | ✅ |
-| **Issue attachments (upload / list / delete)** | ❌ | ✅ |
-| **Activity history** | ❌ | ✅ |
-| **VCS changes** | ❌ | ✅ |
+| Get / update / delete work items | Not yet | ✅ |
+| All work items across instance | Not yet | ✅ |
+| Issue links (create / get / delete) | Not yet | ✅ |
+| Custom link types (create / update) | Not yet | ✅ |
+| Issue attachments (upload / list / delete) | Not yet | ✅ |
+| Activity history | Not yet | ✅ |
+| VCS changes | Not yet | ✅ |
 | Tags (manage on issues) | ✅ | ✅ |
-| **Tag CRUD (create / update / delete)** | ❌ | ✅ |
-| **Saved queries** | ❌ | ✅ |
-| **Agile boards & sprints** | ❌ | ✅ |
-| **Knowledge Base articles** | ❌ | ✅ |
-| **Article comments & attachments** | ❌ | ✅ |
-| **Create / list projects** | ❌ | ✅ |
-| **Users & groups** | ❌ | ✅ |
+| Tag CRUD (create / update / delete) | Not yet | ✅ |
+| Saved queries | Not yet | ✅ |
+| Agile boards & sprints | Not yet | ✅ |
+| Knowledge Base articles | Not yet | ✅ |
+| Article comments & attachments | Not yet | ✅ |
+| Create / list projects | Not yet | ✅ |
+| Users & groups | Not yet | ✅ |
 | apply_command (bulk) | ✅ | ✅ |
-| **Issue count** | ❌ | ✅ |
-| **Total tools** | **~19** | **70** |
+| Issue count | Not yet | ✅ |
+| **Total tools (today)** | **~19** | **70** |
 
 ---
 
