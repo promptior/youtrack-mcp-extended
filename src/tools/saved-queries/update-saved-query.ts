@@ -17,7 +17,8 @@ exports.aiTool = {
       },
       query: {
         type: 'string',
-        description: 'New YouTrack query string (optional)',
+        description:
+          'New YouTrack query string (optional). Use project shortNames when known (e.g., "project: PROJ"). For project names or values with spaces, use curly braces (e.g., "project: {Project With Spaces} State: Open"). Do not quote multi-word project names and do not use internal project IDs in project: queries (avoid project: "Project With Spaces" and project: 0-119).',
       },
     },
     required: ['queryId'],

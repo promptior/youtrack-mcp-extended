@@ -10,7 +10,8 @@ exports.aiTool = {
     properties: {
       query: {
         type: 'string',
-        description: 'YouTrack query string (e.g., "project = DEMO State = Open", "assignee = me #unresolved")',
+        description:
+          'YouTrack query string. Use project shortNames when known (e.g., "project: PROJ State: Open"). For project names or values with spaces, use curly braces (e.g., "project: {Project With Spaces} assignee: me #unresolved"). Do not quote multi-word project names and do not use internal project IDs in project: queries (avoid project: "Project With Spaces" and project: 0-119).',
       },
       top: {
         type: 'number',
@@ -45,7 +46,7 @@ exports.aiTool = {
             description: { type: 'string' },
             created: { type: 'number' },
             updated: { type: 'number' },
-            resolved: { type: 'number' },
+            resolved: { type: ['number', 'null'] },
             priority: { type: 'object' },
             state: { type: 'object' },
             assignee: { type: 'object' },

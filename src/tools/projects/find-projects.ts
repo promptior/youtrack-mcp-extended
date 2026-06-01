@@ -42,7 +42,7 @@ exports.aiTool = {
             id: { type: 'string' },
             name: { type: 'string' },
             shortName: { type: 'string' },
-            description: { type: 'string' },
+            description: { type: ['string', 'null'] },
             leader: { type: 'object' },
           },
         },

@@ -32,7 +32,7 @@ exports.aiTool = {
       description: { type: 'string' },
       created: { type: 'number' },
       updated: { type: 'number' },
-      resolved: { type: 'number' },
+      resolved: { type: ['number', 'null'] },
       priority: { type: 'object' },
       state: { type: 'object' },
       type: { type: 'object' },
