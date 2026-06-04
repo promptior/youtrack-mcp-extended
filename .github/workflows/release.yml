@@ -21,6 +21,12 @@ jobs:
         run: |
           NEW_VERSION=$(node -p "require('./package.json').version")
           OLD_VERSION=$(git show HEAD~1:package.json | node -p "JSON.parse(require('fs').readFileSync(0)).version" || echo "")
+          # Reject anything that isn't a strict semver string before using it
+          # downstream (prevents shell / GITHUB_OUTPUT injection via package.json).
+          if [[ ! "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?(\+[0-9A-Za-z.]+)?$ ]]; then
+            echo "Invalid version string in package.json: '$NEW_VERSION'" >&2
+            exit 1
+          fi
           echo "new=$NEW_VERSION" >> "$GITHUB_OUTPUT"
           if [ "$NEW_VERSION" != "$OLD_VERSION" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -56,9 +62,11 @@ jobs:
 
       - name: Create and push tag
         if: steps.version.outputs.changed == 'true'
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.new }}
         run: |
-          git tag "v${{ steps.version.outputs.new }}"
-          git push origin "v${{ steps.version.outputs.new }}"
+          git tag "v$NEW_VERSION"
+          git push origin "v$NEW_VERSION"
 
       - name: Create GitHub Release
         if: steps.version.outputs.changed == 'true'
