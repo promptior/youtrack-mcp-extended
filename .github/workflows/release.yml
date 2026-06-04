@@ -2,8 +2,9 @@ name: Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
+    paths:
+      - 'package.json'
 
 jobs:
   publish:
@@ -12,19 +13,64 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check if version changed
+        id: version
+        run: |
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          OLD_VERSION=$(git show HEAD~1:package.json | node -p "JSON.parse(require('fs').readFileSync(0)).version" || echo "")
+          # Reject anything that isn't a strict semver string before using it
+          # downstream (prevents shell / GITHUB_OUTPUT injection via package.json).
+          if [[ ! "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?(\+[0-9A-Za-z.]+)?$ ]]; then
+            echo "Invalid version string in package.json: '$NEW_VERSION'" >&2
+            exit 1
+          fi
+          echo "new=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          if [ "$NEW_VERSION" != "$OLD_VERSION" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Version changed: $OLD_VERSION -> $NEW_VERSION"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Version unchanged ($NEW_VERSION); skipping publish."
+          fi
+
       - uses: actions/setup-node@v4
+        if: steps.version.outputs.changed == 'true'
         with:
           node-version: '20'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
+
       - run: npm ci
+        if: steps.version.outputs.changed == 'true'
+
       - run: npm run type-check
+        if: steps.version.outputs.changed == 'true'
+
       - run: npm test
+        if: steps.version.outputs.changed == 'true'
+
       - run: npm run build
+        if: steps.version.outputs.changed == 'true'
+
       - run: npm publish
+        if: steps.version.outputs.changed == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create and push tag
+        if: steps.version.outputs.changed == 'true'
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.new }}
+        run: |
+          git tag "v$NEW_VERSION"
+          git push origin "v$NEW_VERSION"
+
       - name: Create GitHub Release
+        if: steps.version.outputs.changed == 'true'
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: "v${{ steps.version.outputs.new }}"
           generate_release_notes: true
