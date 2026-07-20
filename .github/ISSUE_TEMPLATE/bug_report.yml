@@ -1,0 +1,120 @@
+name: "\U0001F41E Bug report"
+description: Report a tool that fails, returns wrong data, or behaves unexpectedly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+
+        > [!WARNING]
+        > **Never paste your `YOUTRACK_TOKEN`, raw `perm:` values, or private issue content.**
+        > Redact them as `perm:<redacted>` before submitting. If the bug itself is a security
+        > problem, do not open a public issue — see our [security policy](https://github.com/promptior/youtrack-mcp-extended/security/policy) instead.
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Affected tool
+      description: The MCP tool name that misbehaves. Use `n/a` if the problem is not tool-specific (startup, connection, packaging).
+      placeholder: get_sprint
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: What did you expect to happen, and what happened instead? If you intend to submit a PR for this issue, tell us in the description.
+      placeholder: I called ... with ... What I expect is ... What actually happens is ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: |
+        The exact tool arguments that trigger the bug, plus the response you got back.
+        Redact issue IDs, project names and any content you cannot share publicly.
+      render: json
+      placeholder: |
+        // arguments
+        { "boardId": "160-27", "sprintId": "163-27" }
+
+        // response
+        { "sprint": { "issues": [{ "state": null }] } }
+    validations:
+      required: true
+
+  - type: dropdown
+    id: youtrack-deployment
+    attributes:
+      label: YouTrack deployment
+      options:
+        - YouTrack Cloud
+        - YouTrack Server (self-hosted)
+    validations:
+      required: true
+
+  - type: input
+    id: youtrack-version
+    attributes:
+      label: YouTrack version
+      description: Found under Administration → Global Settings, or at the bottom of the YouTrack UI.
+      placeholder: "2025.3"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mcp-client
+    attributes:
+      label: MCP client
+      options:
+        - Claude Code
+        - Claude Desktop
+        - Cursor
+        - Other (specify in "Additional context")
+    validations:
+      required: true
+
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System info
+      description: "Output of: `npx envinfo --system --binaries --npmPackages '{@promtior/youtrack-mcp-extended,@modelcontextprotocol/sdk}'`"
+      render: shell
+      placeholder: System, Binaries, npmPackages
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Server logs
+      description: |
+        The MCP server writes diagnostics to stderr. Paste the relevant lines here — **with the token redacted**.
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Anything else that helps — token permissions, custom fields involved, workflows enabled on the project.
+
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Validations
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Read the [Contributing Guidelines](https://github.com/promptior/youtrack-mcp-extended/blob/main/CONTRIBUTING.md).
+          required: true
+        - label: Read the [README](https://github.com/promptior/youtrack-mcp-extended#readme), including the **Known Limitations** section.
+          required: true
+        - label: Check that there isn't [already an issue](https://github.com/promptior/youtrack-mcp-extended/issues) reporting the same bug.
+          required: true
+        - label: Check that the token used has the permissions the operation requires (see [Authentication](https://github.com/promptior/youtrack-mcp-extended#authentication)) — a `403` from YouTrack is usually a token scope problem, not a bug.
+          required: true
+        - label: I have redacted my YouTrack token and any private data from this report.
+          required: true

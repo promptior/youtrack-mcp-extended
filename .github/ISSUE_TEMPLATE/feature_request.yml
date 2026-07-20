@@ -1,0 +1,53 @@
+name: "\U0001F680 Feature request"
+description: Propose an improvement to an existing tool, the server, or the tooling
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+
+        Proposing a brand-new tool for an uncovered REST endpoint? Use the
+        [new tool proposal](https://github.com/promptior/youtrack-mcp-extended/issues/new?template=new_tool.yml) template instead.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Description
+      description: Clear and concise description of the problem. Make the reason and use cases as detailed as possible. If you intend to submit a PR for this issue, tell us in the description.
+      placeholder: As a user of this MCP server I want [goal] so that [benefit].
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: Suggested solution
+      description: Where would this live and how would it work? Reference files as `src/tools/…/foo.ts:42` where you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative
+    attributes:
+      label: Alternative
+      description: Any alternative solutions you've considered.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Anything else that helps — links to the YouTrack REST docs, MCP spec sections, prior art in other servers.
+
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Validations
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Read the [Contributing Guidelines](https://github.com/promptior/youtrack-mcp-extended/blob/main/CONTRIBUTING.md).
+          required: true
+        - label: Read the [README](https://github.com/promptior/youtrack-mcp-extended#readme), including the **Known Limitations** section.
+          required: true
+        - label: Check that there isn't already an issue requesting the same thing.
+          required: true

@@ -1,0 +1,83 @@
+name: "\U0001F527 New tool proposal"
+description: Propose exposing a YouTrack REST endpoint that no tool covers yet
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This server maps YouTrack REST endpoints to MCP tools — one tool per file under `src/tools/<domain>/`.
+        Use this template to propose a **new** tool. To change how an existing tool behaves, use the
+        [feature request](https://github.com/promptior/youtrack-mcp-extended/issues/new?template=feature_request.yml) template instead.
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Proposed tool name
+      description: "`snake_case`, matching the naming of the existing tools."
+      placeholder: delete_sprint
+    validations:
+      required: true
+
+  - type: input
+    id: endpoint
+    attributes:
+      label: REST endpoint
+      description: Method and path from the [YouTrack REST API reference](https://www.jetbrains.com/help/youtrack/devportal/resource-api-agiles-agileID-sprints.html).
+      placeholder: "DELETE /api/agiles/{agileID}/sprints/{sprintID}"
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What can't be done today without this tool? Be concrete about the workflow it unblocks.
+      placeholder: As a user I want to ... so that ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround
+      description: |
+        Can this already be achieved through `apply_command`, an existing tool, or only via the YouTrack UI?
+        Say so — it helps us judge priority.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: destructive
+    attributes:
+      label: Is the operation destructive?
+      description: Determines the MCP `destructiveHint` annotation, which is what MCP clients use to decide whether to ask the user for confirmation.
+      options:
+        - "No — read-only"
+        - "No — creates or updates, fully reversible"
+        - "Yes — deletes or irreversibly changes data"
+    validations:
+      required: true
+
+  - type: input
+    id: permissions
+    attributes:
+      label: Required token permissions
+      description: Which permanent-token scope does this endpoint need?
+      placeholder: YouTrack Administration
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Validations
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Read the [Contributing Guidelines](https://github.com/promptior/youtrack-mcp-extended/blob/main/CONTRIBUTING.md), including the "Adding a New Tool" section.
+          required: true
+        - label: Check that the [tool reference](https://github.com/promptior/youtrack-mcp-extended#tool-reference) does not already cover this.
+          required: true
+        - label: Check that the endpoint exists in the YouTrack REST API and is not UI-only.
+          required: true
+        - label: Check that there isn't already an issue proposing the same tool.
+          required: true
