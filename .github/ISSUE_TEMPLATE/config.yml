@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "\U0001F510 Report a security vulnerability"
+    url: https://github.com/promptior/youtrack-mcp-extended/security/policy
+    about: Please report security issues privately — do not open a public issue.
+  - name: "\U0001F4D8 YouTrack REST API reference"
+    url: https://www.jetbrains.com/help/youtrack/devportal/youtrack-rest-api.html
+    about: Check whether the endpoint behaves as you expect before filing a bug.
+  - name: "\U0001F9E9 Official JetBrains YouTrack MCP server"
+    url: https://www.jetbrains.com/help/youtrack/cloud/mcp-server.html
+    about: This project complements the official server. Issues with the official one belong to JetBrains.
