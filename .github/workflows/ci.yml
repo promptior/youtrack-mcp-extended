@@ -4,6 +4,18 @@ on:
   pull_request:
     branches:
       - develop
+      - main
+  push:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci:
@@ -27,19 +39,6 @@ jobs:
       - name: Type Check
         run: npm run type-check
 
-      - name: Run Semgrep Scan
-        uses: semgrep/semgrep-action@v1
-        with:
-          config: 'p/security-audit p/secrets'
-
-      - name: Run Trivy Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          exit-code: '1'
-          severity: 'CRITICAL,HIGH'
-
       - name: Run Tests
         run: npm run test:coverage
 
@@ -48,6 +47,22 @@ jobs:
 
       - name: Upload Codecov
         uses: codecov/codecov-action@v4
+
+      # Scans run last so a dependency advisory cannot abort the job before the
+      # tests report — the first run of this workflow failed on Trivy and left
+      # the test, build and coverage steps skipped, producing no signal at all.
+      - name: Run Semgrep Scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: 'p/security-audit p/secrets'
+
+      - name: Run Trivy Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
 
       - name: Enviar Notificación a Teams
         if: always()
@@ -119,4 +134,6 @@ jobs:
               ]
             }' > teams_ci.json
 
-          curl -s -H "Content-Type: application/json" -d @teams_ci.json "$TEAMS_WEBHOOK"
+          # --fail so a rejected or expired webhook surfaces instead of exiting 0
+          # with an error body; --show-error keeps the reason visible under -s.
+          curl -sS --fail -H "Content-Type: application/json" -d @teams_ci.json "$TEAMS_WEBHOOK"
