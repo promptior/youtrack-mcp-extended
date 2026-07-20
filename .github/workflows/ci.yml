@@ -1,21 +1,139 @@
 name: CI
+
 on:
-  push:
-    branches: [main]
   pull_request:
-    branches: [main]
+    branches:
+      - develop
+      - main
+  push:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run type-check
-      - run: npm run test:coverage
-      - uses: codecov/codecov-action@v4
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Lint
+        run: npm run lint
+
+      - name: Type Check
+        run: npm run type-check
+
+      - name: Run Tests
+        run: npm run test:coverage
+
+      - name: Run Build
+        run: npm run build
+
+      - name: Upload Codecov
+        uses: codecov/codecov-action@v4
+
+      # Scans run last so a dependency advisory cannot abort the job before the
+      # tests report — the first run of this workflow failed on Trivy and left
+      # the test, build and coverage steps skipped, producing no signal at all.
+      - name: Run Semgrep Scan
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: 'p/security-audit p/secrets'
+
+      - name: Run Trivy Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Enviar Notificación a Teams
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK_URL }}
+        run: |
+          if [ -z "$TEAMS_WEBHOOK" ]; then
+            echo "TEAMS_WEBHOOK_URL not configured. Skipping notification."
+            exit 0
+          fi
+
+          if [ "$JOB_STATUS" = "success" ]; then
+            OVERALL="EXITOSO ✅"
+            COLOR="Good"
+          else
+            OVERALL="FALLIDO ❌"
+            COLOR="Attention"
+          fi
+
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+
+          jq -n \
+            --arg overall "$OVERALL" \
+            --arg color "$COLOR" \
+            --arg pr "${PR_TITLE:-Integración Continua} (#${PR_NUM:-N/A})" \
+            --arg url "${PR_URL:-https://github.com/${{ github.repository }}}" \
+            --arg app "$REPO_NAME" \
+            '{
+              "type": "message",
+              "attachments": [
+                {
+                  "contentType": "application/vnd.microsoft.card.adaptive",
+                  "contentUrl": null,
+                  "content": {
+                    "type": "AdaptiveCard",
+                    "version": "1.4",
+                    "body": [
+                      {
+                        "type": "TextBlock",
+                        "size": "Medium",
+                        "weight": "Bolder",
+                        "text": ("🛡️ Integración Continua (CI) - " + $app),
+                        "color": "Accent"
+                      },
+                      {
+                        "type": "FactSet",
+                        "facts": [
+                          { "title": "Pull Request:", "value": $pr },
+                          { "title": "Resultado Final:", "value": $overall }
+                        ]
+                      },
+                      {
+                        "type": "ActionSet",
+                        "actions": [
+                          {
+                            "type": "Action.OpenUrl",
+                            "title": "🔍 Ver en GitHub",
+                            "url": $url
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }' > teams_ci.json
+
+          # --fail so a rejected or expired webhook surfaces instead of exiting 0
+          # with an error body; --show-error keeps the reason visible under -s.
+          curl -sS --fail -H "Content-Type: application/json" -d @teams_ci.json "$TEAMS_WEBHOOK"
