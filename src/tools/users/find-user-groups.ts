@@ -41,7 +41,7 @@ exports.aiTool = {
           properties: {
             id: { type: 'string' },
             name: { type: 'string' },
-            description: { type: 'string' },
+            description: { type: ['string', 'null'] },
             usersCount: { type: 'number' },
           },
         },

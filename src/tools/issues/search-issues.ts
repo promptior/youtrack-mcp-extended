@@ -43,7 +43,7 @@ exports.aiTool = {
             id: { type: 'string' },
             idReadable: { type: 'string' },
             summary: { type: 'string' },
-            description: { type: 'string' },
+            description: { type: ['string', 'null'] },
             created: { type: 'number' },
             updated: { type: 'number' },
             resolved: { type: ['number', 'null'] },

@@ -45,7 +45,7 @@ exports.aiTool = {
       id: { type: 'string' },
       idReadable: { type: 'string' },
       summary: { type: 'string' },
-      description: { type: 'string' },
+      description: { type: ['string', 'null'] },
       type: { type: ['object', 'null'] },
       assignee: { type: ['object', 'null'] },
       priority: { type: ['object', 'null'] },
