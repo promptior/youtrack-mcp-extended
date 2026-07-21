@@ -40,7 +40,7 @@ exports.aiTool = {
               },
             },
             type: { type: ['object', 'null'], description: 'Work type as { name } or null when no type is set.' },
-            description: { type: 'string' },
+            description: { type: ['string', 'null'] },
           },
         },
       },

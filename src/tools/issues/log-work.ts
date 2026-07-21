@@ -56,7 +56,7 @@ exports.aiTool = {
       id: { type: 'string' },
       date: { type: 'number' },
       duration: { type: 'number' },
-      description: { type: 'string' },
+      description: { type: ['string', 'null'] },
       type: { type: ['object', 'null'], description: 'Resolved work type as { name } or null.' },
       author: {
         type: 'object',
