@@ -40,7 +40,7 @@ exports.aiTool = {
             prefix: { type: 'string' },
             option: { type: 'string' },
             suffix: { type: 'string' },
-            description: { type: 'string' },
+            description: { type: ['string', 'null'] },
             matchingStart: { type: 'number' },
             matchingEnd: { type: 'number' },
           },

@@ -32,6 +32,15 @@ describe('nullable YouTrack fields in output schemas', () => {
     expectSchemaTypeToAllow(findProjectsDescriptionSchema, 'string');
     expectSchemaTypeToAllow(getProjectDescriptionSchema, 'string');
   });
+
+  it('allows issues without descriptions in get_issue and search_issues', () => {
+    const getIssueDescriptionSchema = getIssue.aiTool.outputSchema.properties.description;
+    const searchIssuesDescriptionSchema =
+      searchIssues.aiTool.outputSchema.properties.issues.items.properties.description;
+
+    expectSchemaTypeToAllow(getIssueDescriptionSchema, 'string');
+    expectSchemaTypeToAllow(searchIssuesDescriptionSchema, 'string');
+  });
 });
 
 describe('YouTrack query syntax descriptions', () => {
